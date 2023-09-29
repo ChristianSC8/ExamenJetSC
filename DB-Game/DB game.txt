@@ -1,0 +1,11 @@
+DB game
+
+CREATE TABLE resultados (
+    id_resultado INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_partida VARCHAR(30) NOT NULL,
+    nombre_jugador1 VARCHAR(40) NOT NULL,
+    nombre_jugador2 VARCHAR(40) NOT NULL,
+    ganador VARCHAR(40) NOT NULL,
+    punto INT NOT NULL,
+    estado VARCHAR(10) NOT NULL
+);

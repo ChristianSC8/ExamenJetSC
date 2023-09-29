@@ -2,7 +2,9 @@ package pe.edu.upeu.examsc3r.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,12 +37,12 @@ val TOP_LEVEL_DESTINATIONS = listOf(
     ),
     MyAppTopLevelDestination(
         route = MyAppRoute.GAME,
-        selectedIcon = Icons.Default.Settings,
+        selectedIcon = Icons.Default.PlayArrow,
         iconTextId = R.string.account
     ),
     MyAppTopLevelDestination(
         route = MyAppRoute.BOARD,
-        selectedIcon = Icons.Default.Warning,
+        selectedIcon = Icons.Default.DateRange,
         iconTextId = R.string.settings
     ),
 )

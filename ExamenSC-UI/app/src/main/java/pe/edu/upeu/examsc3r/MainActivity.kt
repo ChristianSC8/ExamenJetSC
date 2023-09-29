@@ -1,10 +1,10 @@
 package pe.edu.upeu.examsc3r
 
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -49,9 +50,11 @@ import pe.edu.upeu.examsc3r.ui.presentation.screens.Board
 import pe.edu.upeu.examsc3r.ui.presentation.screens.Game
 import pe.edu.upeu.examsc3r.ui.presentation.screens.Home
 import pe.edu.upeu.examsc3r.ui.theme.ExamSC3RTheme
+import pe.edu.upeu.examsc3r.viewModel.ResultViewModel
 
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -62,7 +65,7 @@ class MainActivity : ComponentActivity() {
                 }
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val selectedDestination = navBackStackEntry?.destination?.route ?: MyAppRoute.HOME
-
+                val viewModel by viewModels<ResultViewModel>()
                 MyAppContent(
                     navController = navController,
                     selectedDestination = selectedDestination,
@@ -80,6 +83,7 @@ fun MyAppContent(
     selectedDestination: String,
     navigateTopLevelDestination: (MyAppTopLevelDestination) -> Unit
 ) {
+    val viewModel: ResultViewModel = viewModel()
     Row(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             NavHost(
@@ -88,13 +92,14 @@ fun MyAppContent(
                 startDestination = MyAppRoute.HOME
             ) {
                 composable(MyAppRoute.HOME) {
-                    Home()
+                    Home(navController = navController)
                 }
                 composable(MyAppRoute.GAME) {
-                    Game()
+                    Game(navController = navController, viewModel = viewModel )
                 }
                 composable(MyAppRoute.BOARD) {
-                    Board()
+                    viewModel.getResults()
+                    Board(viewModel.resultsListApi, viewModel)
                 }
             }
             MyAppBottomNavigation(
@@ -123,19 +128,6 @@ fun MyAppTopBar(){
     )
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 @Composable
 fun MyAppBottomNavigation(
     selectedDestination: String,
@@ -153,7 +145,7 @@ fun MyAppBottomNavigation(
                 modifier = Modifier
                     .clickable { navigateTopLevelDestination(destination) }
                     .padding(10.dp)
-                    .weight(1f), // Distribuye el espacio de manera uniforme entre las columnas
+                    .weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -161,7 +153,7 @@ fun MyAppBottomNavigation(
                     imageVector = destination.selectedIcon,
                     contentDescription = null,
                     tint = if (selectedDestination == destination.route) {
-                        Color(0xFF0077CC)
+                        Color(0xFF6482E2)
                     } else {
                         Color.Gray
                     }
@@ -170,7 +162,7 @@ fun MyAppBottomNavigation(
                 Text(
                     text = stringResource(id = destination.iconTextId),
                     color = if (selectedDestination == destination.route) {
-                        Color(0xFF0077CC)
+                        Color(0xFF6482E2)
                     } else {
                         Color.Gray
                     }
@@ -179,4 +171,3 @@ fun MyAppBottomNavigation(
         }
     }
 }
-
